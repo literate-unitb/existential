@@ -11,8 +11,6 @@ import Data.Proxy.TH
 import Data.Serialize
 import Data.Typeable
 
-import GHC.Generics.Instances ()
-
 import Language.Haskell.TH
 import Language.Haskell.TH.Lens
 
