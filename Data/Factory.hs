@@ -1,4 +1,4 @@
-{-# LANGUAGE ConstraintKinds,ScopedTypeVariables #-}
+{-# LANGUAGE ConstraintKinds,CPP,ScopedTypeVariables #-}
 module Data.Factory where
 
 import Control.Lens
@@ -38,7 +38,11 @@ makeFactory n = do
     tableName <- newName $ "table_" ++ nameBase n
     let ts' = filter (null.view _1) (ts^.instances) ^. types
         instances = partsOf (traverse._InstanceD)
+#if MIN_VERSION_template_haskell(2,11,0)
+        types = partsOf (traverse._3._AppT._2)
+#else
         types = partsOf (traverse._2._AppT._2)
+#endif
         sig = sigD tableName [t|Factory $(conT n)|]
         table = [e| fromList $(listE $ map pair ts') |]
         proxy :: Type -> ExpQ

@@ -1,5 +1,6 @@
 {-# LANGUAGE KindSignatures
     ,ConstraintKinds
+    ,CPP
     ,UndecidableInstances
     ,ExistentialQuantification
     ,ScopedTypeVariables
@@ -24,6 +25,7 @@ import Language.Haskell.TH
 import Prelude hiding ((.),id)
 
 import Test.QuickCheck
+import Test.QuickCheck.AxiomaticClass
 import Test.QuickCheck.Report
 
 import Text.Printf
@@ -214,9 +216,6 @@ readInst1 f = getConst . traverseInst1 (Const . f)
 
 -- |
 -- = Combinators =
-
-class (c0 a,c1 a) => (c0 :&: c1) a where
-instance (c0 a,c1 a) => (c0 :&: c1) a where
 
 apply2Cells :: Functor f
             => (forall a. (constr a,Typeable a) 
@@ -442,10 +441,11 @@ arbitraryInstanceOf' :: Name -> Name -> [TypeQ] -> ExpQ
 arbitraryInstanceOf' cons cl ts = do
         ClassI _ is <- reify cl
         ts <- sequence ts
-        let getArg (InstanceD [] (AppT _ t) []) 
-                | t `notElem` ts = return (Just t)
-                | otherwise      = return Nothing
-            getArg t = do
+        let getArg t = case t^?_InstanceD of 
+              Just ([], AppT _ t,[]) 
+                | t `notElem` ts -> return (Just t)
+                | otherwise      -> return Nothing
+              _ -> do
                 reportError $ "invalid number of arguments in instance: " ++ pprint t
                 return Nothing
             --trigger x = 

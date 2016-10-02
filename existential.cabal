@@ -13,10 +13,10 @@ name:                existential
 version:             0.1.0.0
 
 -- A short (one-line) description of the package.
--- synopsis:            
+synopsis:            Existential types with lens-like accessors.
 
 -- A longer description of the package.
--- description:         
+description:         Existential types encapsulated in Cell type together with some lens-like accessors. A template-haskell-based factory generator is also provided to use TypeRep to reconstruct Cell objects.
 
 -- The license under which the package is released.
 license:             MIT
@@ -45,6 +45,9 @@ build-type:          Simple
 -- Constraint on the version of Cabal needed to build this package.
 cabal-version:       >=1.10
 
+source-repository head
+  type:     git
+  location: https://github.com/literate-unitb/existential
 
 library
   -- Modules exported by the library.
@@ -57,13 +60,13 @@ library
   default-extensions:    KindSignatures, ConstraintKinds, UndecidableInstances, ExistentialQuantification, ScopedTypeVariables, TypeOperators, TemplateHaskell, RankNTypes, MultiParamTypeClasses, FunctionalDependencies, FlexibleInstances, FlexibleContexts, QuasiQuotes, DefaultSignatures
   
   -- Other library packages from which modules are imported.
-  build-depends:       base >=4.8 && <4.9, lens >=4.13 && <4.14, template-haskell >=2.10 && <2.11, QuickCheck >=2.8 && <2.9, unordered-containers >=0.2 && <0.3, tagged >=0.8 && <0.9, generic-instances, printf-th, cereal, axiomatic-classes, constraints, invariants
+  build-depends:       base >=4.7 && <5, lens >=4.10 && <4.15, template-haskell >=2.10 && <2.13, QuickCheck >=2.8 && <2.10, unordered-containers >=0.2 && <0.3, tagged >=0.8 && <0.9, generic-instances, printf-th, cereal, axiomatic-classes, constraints, invariants
   
   ghc-options: -W -fwarn-missing-signatures 
          -fwarn-incomplete-uni-patterns
          -fwarn-missing-methods
          -fno-ignore-asserts
-         -fwarn-tabs -Werror
+         -fwarn-tabs
          -j8
 
   -- Directories containing source files.
