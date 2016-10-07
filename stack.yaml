@@ -37,9 +37,9 @@ resolver: lts-6.18
 # will not be run. This is useful for tweaking upstream packages.
 packages:
 - '.'
-- location:
-    git: https://github.com/literate-unitb/generic-instances.git
-    commit: 51cfdcd0b715f22c17f9da0321295ae67f641f25
+- location: 
+    git: https://github.com/literate-unitb/serialize-instances.git
+    commit: b79b6cfc7c7828225d25969814977d25192a1aba
 - location: 
     git: https://github.com/literate-unitb/axiomatic-classes.git
     commit: 643c833aa8836b23d8057cbbf410a9deedc76026
