@@ -65,7 +65,7 @@ putCell1 :: forall constr f. HasFactory constr
 putCell1 putA (Cell x) = do
     let tr = [pr|constr|]
     unless (typeRep x `M.member` factory tr) $
-        fail $ [printf|%s is not available in Factory (%s)|] (show $ typeRep x) (show tr)
+        fail $ [s|%s is not available in Factory (%s)|] (show $ typeRep x) (show tr)
     put (typeRep x) 
     putA x
 

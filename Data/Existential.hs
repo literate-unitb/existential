@@ -21,11 +21,11 @@ import Data.Maybe
 import Data.Typeable
 
 import Language.Haskell.TH
+import Language.Haskell.TH.Lens.Portable
 
 import Prelude hiding ((.),id)
 
 import Test.QuickCheck
-import Test.QuickCheck.AxiomaticClass
 import Test.QuickCheck.Report
 
 import Text.Printf
@@ -441,7 +441,7 @@ arbitraryInstanceOf' :: Name -> Name -> [TypeQ] -> ExpQ
 arbitraryInstanceOf' cons cl ts = do
         ClassI _ is <- reify cl
         ts <- sequence ts
-        let getArg t = case t^?_InstanceD of 
+        let getArg t = case t^?_InstanceD' of 
               Just ([], AppT _ t,[]) 
                 | t `notElem` ts -> return (Just t)
                 | otherwise      -> return Nothing
