@@ -199,3 +199,11 @@ script:
       ;;
   esac
   set +ex
+deploy:
+  provider: hackage
+  username: simon.hudon@gmail.com
+  password:
+    secure: 6B37eqjdIrlC6dpo9r72Zi1bui49xn7u0Mh1iFMZB6xImEnZYaezCoX4qr1coe18GZaDorBSwyLpkh9nqdPE4nnbS4ZoO/+yYeDA3wUFi5i3UFbtaNb9PTRC/BWTAf/4uKhdNNEJhFs3b31ZA0SH93hyO/b7ZYKiE7J8+meDLSLQT5GylcO1mviD9lEe2hkdzbGPeHu2dz8aoLEiqBdoOKZCXeloChtv5uGE6/P9K/11w1CizBPtzqUj0NzKMui7buXG+zWnGGOP3lawQDloq7V+ifB1Kptp2W08XLxdUcoG7A68F5rqJ5bXjpMIP0cuChM0C6r7E7mb0mLY44FMP52gxneiIQZPGsrDS9tinlr1slS1szGE+1JfIWhu8ldLx5CsT0wT2t37Spf6JAQDFMaXL/r8PzBp21GvD8komnpyzccG5eqNOzwyzsd5/aPc5VDpReVkgU60ko6WeDWNbNKhiwFRcWZv/dIVYE0DNFTNUeSwaPzy2N4BotwtBCBz7jUZFWGdTf4c9HrgY+T4u3a8dWREmSIxkgUz6dvxwUNGZcackDchuw0qZigefkuOt+r/P/zZgE2eTSERi3DlJ1Vv/xHqMFVFaIMblvgmkRoFIdWCsAXofmswz/lATrSVsdHoYRRcmWMMGJGsOfkH834MtQNj7ylmbfaYkzRNXFY=
+  on:
+    repo: literate-unitb/existential
+    tags: true
