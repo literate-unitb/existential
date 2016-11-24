@@ -62,7 +62,7 @@ library
   -- Other library packages from which modules are imported.
   build-depends:       
       base >=4.7 && <5
-    , lens >=4.10 && <4.15
+    , lens >=4.10 && <4.16
     , template-haskell >=2.10 && <2.13
     , QuickCheck >=2.8 && <2.10
     , unordered-containers >=0.2 && <0.3
