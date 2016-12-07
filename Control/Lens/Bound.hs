@@ -68,11 +68,11 @@ type ExLens' c0a c0b s a = ExLens c0a c0b s s a a
 type ExTraversal' c0a c0b s a = ExTraversal c0a c0b s s a a
 
 instance Monoid m => Monoid (BFocus p r c0 c1 (Const m) a b) where
-    mempty = BFocus mempty
-    BFocus f `mappend` BFocus g = BFocus $ f `mappend` g
+    mempty = BFocus $ \c p x -> Const mempty
+    BFocus f `mappend` BFocus g = BFocus $ \c p -> f c p `mappend` g c p
 
 instance Monad m => Category (BFocus p r c0 c1 m) where
-    id = BFocus $ const $ const pure
+    id = BFocus $ \_ _ -> pure
     BFocus f . BFocus g = BFocus $ \c p -> f c p <=< g c p
 
 makeBLens :: BoundLensType c0a c0b c1a c1b f s t a b
@@ -186,7 +186,7 @@ overRawWith :: (forall p q. BoundLensLike p q Identity c0a c0b c1a c1b s t a b)
             -> (forall x. Prism' x i
                     -> a x -> b x)
             -> s i -> t i
-overRawWith ln f = runIdentity . applyRawWith ln (fmap Identity . f)
+overRawWith ln f = runIdentity . applyRawWith ln (\c p -> Identity $ f c p)
 
 overAsms :: (c0a i,c0b)
           => (forall p q. BoundLensLike p q Identity c0a c0b c1a c1b s t a b)
@@ -201,7 +201,7 @@ overAsmsWith :: (c0a i,c0b)
                     => Prism' x i
                     -> a x -> b x)
               -> s i -> t i
-overAsmsWith ln f = runIdentity . applyAsmsWith ln (fmap Identity . f)
+overAsmsWith ln f = runIdentity . applyAsmsWith ln (\c p -> Identity $ f c p)
 
 overAsmA :: (c0a i,c0b)
           => (forall p q. BoundLensLike p q Identity c0a c0b c1a c1b s t a b)
@@ -223,7 +223,7 @@ overAsmAWith :: (c0a i,c0b)
                     => Prism' x i
                     -> a x -> b x)
               -> s i -> t i
-overAsmAWith ln f = runIdentity . applyAsmAWith ln (fmap Identity . f)
+overAsmAWith ln f = runIdentity . applyAsmAWith ln (\c p -> Identity $ f c p)
 
 overAsmBWith :: (c0a i,c0b)
               => (forall p q. BoundLensLike p q Identity c0a c0b c1a c1b s t a b)
@@ -231,7 +231,7 @@ overAsmBWith :: (c0a i,c0b)
                     => Prism' x i
                     -> a x -> b x)
               -> s i -> t i
-overAsmBWith ln f = runIdentity . applyAsmBWith ln (fmap Identity . f)
+overAsmBWith ln f = runIdentity . applyAsmBWith ln (\c p -> Identity $ f c p)
 
 viewRaw :: (forall p q. BoundLensLike p q (Const r) c0a c0b c1a c1b s t a b)
          -> (forall x.
@@ -243,7 +243,7 @@ viewRawWith :: (forall p q. BoundLensLike p q (Const r) c0a c0b c1a c1b s t a b)
             -> (forall x. Prism' x i
                     -> a x -> r)
             -> s i -> r
-viewRawWith ln f = getConst . applyRawWith ln (fmap Const . f)
+viewRawWith ln f = getConst . applyRawWith ln (\c p -> Const $ f c p)
 
 viewAsms :: (c0a i,c0b)
          => (forall p q. BoundLensLike p q (Const r) c0a c0b c1a c1b s t a b)
@@ -258,7 +258,7 @@ viewAsmsWith :: (c0a i,c0b)
                     => Fold x i
                     -> a x -> r)
               -> s i -> r
-viewAsmsWith ln f = getConst . applyAsmAWith' ln (fmap Const . f)
+viewAsmsWith ln f = getConst . applyAsmAWith' ln (\c p -> Const $ f c p)
 
 viewAsmA :: (c0a i,c0b)
           => (forall p q. BoundLensLike p q (Const r) c0a c0b c1a c1b s t a b)
@@ -273,7 +273,7 @@ viewAsmAWith :: (c0a i,c0b)
                     => Fold x i
                     -> a x -> r)
               -> s i -> r
-viewAsmAWith ln f = getConst . applyAsmAWith' ln (fmap Const . f)
+viewAsmAWith ln f = getConst . applyAsmAWith' ln (\c p -> Const $ f c p)
 
 mapConstrOnFocus :: c1' :- c1
                  -> BFocus p r c0 c1 f a b
