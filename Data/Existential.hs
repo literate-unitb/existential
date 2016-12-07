@@ -1,6 +1,7 @@
 {-# LANGUAGE KindSignatures
     ,ConstraintKinds
     ,CPP
+    ,PolyKinds
     ,UndecidableInstances
     ,ExistentialQuantification
     ,ScopedTypeVariables
@@ -38,7 +39,7 @@ import Text.Printf
 -- in terms of 'Cell1'.
 type Cell = Cell1 Identity
 
-data Cell1 f (constr :: * -> Constraint) = forall a. (constr a, Typeable a) => Cell (f a)
+data Cell1 f (constr :: k -> Constraint) = forall a. (constr a, Typeable a) => Cell (f a)
 -- ^ Generilization of 'Cell'. 'Cell1 MyFunctor MyClass' takes values
 -- ^ of type 'MyFunctor a' with '(MyClass a,Typeable a)'.
 
@@ -137,12 +138,14 @@ inst1 = lens (\(Inst x) -> x) (\(Inst _) y -> Inst y) -- Inst
 -- |
 -- = Traversals
 
-traverseCell :: Functor f => (forall a. (constr a,Typeable a) => a -> f a) 
+traverseCell :: Functor f 
+             => (forall a. (constr a,Typeable a) => a -> f a) 
              -> Cell constr -> f (Cell constr)
 traverseCell f = traverseCell1 $ _Wrapped f
 
 traverseCell' :: (Functor f,HasCell c (Cell constr))
-              => (forall a. (constr a,Typeable a) => a -> f a) -> c -> f c
+              => (forall a. (constr a,Typeable a) => a -> f a) 
+              -> c -> f c
 traverseCell' f = cell (traverseCell f)
 
 traverseCell1 :: Functor f 
@@ -151,7 +154,8 @@ traverseCell1 :: Functor f
 traverseCell1 f (Cell x) = Cell <$> f x
 
 traverseCell1' :: (Functor f,HasCell c (Cell1 g constr))
-               => (forall a. (constr a,Typeable a) => g a -> f (g a)) -> c -> f c
+               => (forall a. (constr a,Typeable a) => g a -> f (g a)) 
+               -> c -> f c
 traverseCell1' f = cell (traverseCell1 f)
 
 traverseInst :: Functor f 

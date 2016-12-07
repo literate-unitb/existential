@@ -1,0 +1,62 @@
+{
+    "folders":
+    [
+        {
+          "path": ".",
+                "folder_exclude_patterns": [".stack-work"],
+                "file_exclude_patterns": 
+                    ["*.aux","*.log","*.pdf","*.z3"
+                    ,"*.fdb_latexmk"
+                    ,"*.fls"]
+        },
+        {
+          "path": "Control",
+                "folder_exclude_patterns": [".stack-work"],
+                "file_include_patterns": ["*hs"]
+        },
+        {
+          "path": "Data",
+                "folder_exclude_patterns": [".stack-work"],
+                "file_include_patterns": ["*hs"]
+        }
+    ],
+    "build_systems":
+    [
+        {
+          "name": "build",
+          "cmd": ["stack", "build", "--ghc-options", "-Wall -Werror -threaded"],
+          "file_regex": "^ {0,4}([^\\s=:\\(\\)][^\\n:\\(\\)]+?hs):([0-9]*):?([0-9]*)",
+          "selector": "source.haskell"
+        },
+        {
+          "name": "run",
+          "cmd": ["stack", "build", "--ghc-options", "-Wall -Werror -threaded"
+              , "--exec", "logic-function-tables-exe"
+              , "--test","--no-run-tests"],
+          "file_regex": "^ {0,4}([^\\s=:\\(\\)][^\\n:\\(\\)]+?hs):([0-9]*):?([0-9]*)",
+          "selector": "source.haskell",
+          "working_dir": "${project_path}"
+        },{
+            "cmd":
+            [
+                "diff_fail"
+            ],
+            "name": "Check test results",
+            "working_dir": "${project_path}"
+        // },{
+        //     "name": "nightly",
+        //     "cmd": [ "stack", "build"
+        //            , "--ghc-options", "-Wall -fno-warn-type-defaults -fno-warn-name-shadowing"
+        //            , "--test", "--no-run-tests"
+        //            , "--resolver","nightly" 
+        //            , "--stack-yaml", "$project_path/stack-nightly.yaml" ],
+        // },{
+        //     "name": "nightly - test",
+        //     "cmd": [ "stack", "test"
+        //            , "--ghc-options", "-Wall -fno-warn-type-defaults -fno-warn-name-shadowing"
+        //            , "--test", "--no-run-tests"
+        //            , "--resolver","nightly" 
+        //            , "--stack-yaml", "$project_path/stack-nightly.yaml" ],
+        }
+    ]
+}

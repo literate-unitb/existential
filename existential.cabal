@@ -51,7 +51,11 @@ source-repository head
 
 library
   -- Modules exported by the library.
-  exposed-modules:     Data.Existential, Data.Factory
+  exposed-modules:     
+      Control.Lens.Bound
+      Data.Existential
+      Data.Existential.Lens
+      Data.Factory
   
   -- Modules included in this library but not exported.
   -- other-modules:       

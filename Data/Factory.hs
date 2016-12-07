@@ -35,7 +35,7 @@ makeFactory n = do
     t  <- varT $ mkName "a"
     ts <- reifyInstances n [t]
     tableName <- newName $ "table_" ++ nameBase n
-    let ts' = filter (null.view _1) (ts^.instances) ^. types
+    let ts' = filter (null.view _1) (ts^.instances) ^. types
         instances = partsOf (traverse._InstanceD)
 #if MIN_VERSION_template_haskell(2,11,0)
         types = partsOf (traverse._3._AppT._2)
