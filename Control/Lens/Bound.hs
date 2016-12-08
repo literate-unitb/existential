@@ -1,4 +1,6 @@
-{-# LANGUAGE TypeOperators,ConstraintKinds #-}
+{-# LANGUAGE TypeOperators
+    ,ConstraintKinds
+    ,PolyKinds #-}
 module Control.Lens.Bound where
 
 import Control.Category
@@ -11,7 +13,7 @@ import Data.Void
 
 import Prelude hiding ((.),id)
 
-class All a where 
+class All (a :: k) where 
 instance All a
 
 type BoundLensType c0a c0b c1a c1b f s t a b = forall i.
