@@ -70,7 +70,7 @@ type ExLens' c0a c0b s a = ExLens c0a c0b s s a a
 type ExTraversal' c0a c0b s a = ExTraversal c0a c0b s s a a
 
 instance Monoid m => Monoid (BFocus p r c0 c1 (Const m) a b) where
-    mempty = BFocus $ \c p x -> Const mempty
+    mempty = BFocus $ \_c _p _x -> Const mempty
     BFocus f `mappend` BFocus g = BFocus $ \c p -> f c p `mappend` g c p
 
 instance Monad m => Category (BFocus p r c0 c1 m) where
@@ -334,9 +334,6 @@ toListOf' ln f = ($ []) . appEndo . viewAsmA ln (Endo . (++) . pure . f)
 -- toLens :: (forall p q. BoundLensLike p q f c0 c1 s t a b)
 --        -> LensLike f (s x) (t x) (a x) (b x)
 -- toLens ln f = unfocus (ln $ BFocus $ \p q pr -> mapping pr f) id id id
-
-
-
 
 
 
